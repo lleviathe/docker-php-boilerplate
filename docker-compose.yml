@@ -47,7 +47,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: webserver
+    container_name: change-me_nginx
     restart: unless-stopped
     tty: true
     depends_on:
