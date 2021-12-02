@@ -6,11 +6,13 @@ If you're tired of manually configuring the docker-compose stack for every new p
 
 - php-fpm with `mbstring, zip, exif, pcntl, pdo_pgsql, xsl, redis` and `gd`  extensions (`8.1` stable version included, fully compatible with `7.4/8.0`)
 - Nginx webserver with configured FastCGI (Default exposed port: `8001`)
-- PostgreSQL DBMS
+- PostgreSQl DBMS
 - Redis
 - PgAdmin 4 (ultimate web UI for PostgreSQL) (Default exposed port: `8080`)
 
-## Usage (*nix based hosts):
+## Usage:
+With Github's template repositories feature, you can create your own repository using this template and configure it with instruction shown below, just change the `lleviathe` to your GitHub username. Read more: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
+
 First of all, of course, you need to install and configure Docker and docker-compose on your machine. Read more: https://docs.docker.com/get-docker/
 
 **Clone & navigate to the repository using Git:**
