@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    container_name: change-me_app
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - ./src:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - change-me-network
+
+  postgres:
+    image: postgres:latest
+    container_name: change-me_postgres
+    tty: true
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpass
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+    networks:
+      - change-me-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: change-me_pgadmin
+    tty: true
+    networks:
+      - change-me-network
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@localhost.dev"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
+  nginx:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    depends_on:
+      - app
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - change-me-network
+  redis:
+    image: redis:alpine
+    tty: true
+    networks:
+      - change-me-network
+    restart: unless-stopped
+    container_name: change-me_redis
+
+networks:
+  change-me-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
